@@ -30,10 +30,11 @@ public class Ball : MonoBehaviour
             if (newBall.TryGetComponent<Ball>(out var b))
             {
                 b.isReady = true;
+                b.id = BallDropper.gameTime;
             }
             Destroy(other.gameObject);
             Destroy(gameObject);
             BallDropper.BallCount--;
-        }  
+        }
     }
 }
