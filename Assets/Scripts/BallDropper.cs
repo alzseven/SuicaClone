@@ -9,6 +9,9 @@ using Random = UnityEngine.Random;
 
 public class BallDropper : MonoBehaviour
 {
+    public AudioSource AudioSource;
+    public AudioClip Dropclip;
+    public AudioClip MergeClip;
     public GameObject[] balls;
     public float speed;
     private Vector2 inputVec;
@@ -18,6 +21,8 @@ public class BallDropper : MonoBehaviour
 
     public TMP_Text text;
     public Image nextBallSprite;
+
+    private LineRenderer _lineRenderer;
     
     public static int BallCount;
     
@@ -25,6 +30,7 @@ public class BallDropper : MonoBehaviour
     {
         BallCount = 0;
         inputVec = Vector2.zero;
+        _lineRenderer = GetComponent<LineRenderer>();
     }
 
     private void Start()
@@ -53,8 +59,25 @@ public class BallDropper : MonoBehaviour
     {
         text.text = BallCount.ToString();
         gameTime += Time.deltaTime;
-        transform.position += (Vector3)inputVec * (speed * Time.deltaTime); 
-        if(currentBall != null) currentBall.transform.position = transform.position;
+        transform.position += (Vector3)inputVec * (speed * Time.deltaTime);
+        if (currentBall != null)
+        {
+            currentBall.transform.position = transform.position;
+
+            _lineRenderer.enabled = true;
+            RaycastHit2D ray = Physics2D.Raycast(transform.position,
+                Vector3.down,
+                float.MaxValue,
+                1<<6);
+            if (ray)
+            {
+                _lineRenderer.SetPosition(1, Vector3.down * ray.distance);
+            }
+        }
+        else
+        {
+            _lineRenderer.enabled = false;
+        }
         if (nextBall != null)
         {
             nextBallSprite.sprite = nextBall.GetComponent<SpriteRenderer>().sprite;
@@ -73,11 +96,13 @@ public class BallDropper : MonoBehaviour
         currentBall.GetComponent<Rigidbody2D>().simulated = true;
         currentBall.GetComponent<Ball>().id = gameTime;
         currentBall = null;
+        AudioSource.PlayOneShot(Dropclip);
     }
 
     private void OnBallCollisionEnter2D(Ball ball)
     {
         ball.OnBallCollisionEnter2D -= OnBallCollisionEnter2D;
+        AudioSource.PlayOneShot(MergeClip);
         GetRandomBall();
     }
 

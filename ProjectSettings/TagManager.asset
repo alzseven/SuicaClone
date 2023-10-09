@@ -11,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Box
   - 
   - 
   - 
@@ -38,6 +38,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BackGround
+    uniqueID: 2441626133
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: LineRenderer
+    uniqueID: 1849881591
+    locked: 0
+  - name: Balls
+    uniqueID: 2583539563
     locked: 0
