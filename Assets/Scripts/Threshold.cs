@@ -1,22 +1,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Data.Variables;
 using UnityEngine;
 
 public class Threshold : MonoBehaviour
 {
-    private void OnTriggerExit2D(Collider2D other)
+    [SerializeField] private ObservableFloatValue gameTime;
+    
+    //TODO:
+    private void OnTriggerStay2D(Collider2D other)
     {
         if (other.TryGetComponent<Ball>(out var b))
         {
-            if (b.isReady)
+            if (gameTime.Value - b.ballID > 1f)
             {
                 Debug.Log("GameOver");
+
+                //TODO: GameOver
                 Time.timeScale = 0;
-            }
-            else
-            {
-                b.isReady = true;                
             }
         }
     }
