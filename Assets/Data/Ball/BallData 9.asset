@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6911d1133be4079a0aabecf72184147, type: 3}
+  m_Name: BallData 9
+  m_EditorClassIdentifier: 
+  ballSprite: {fileID: 21300000, guid: 3e88107bd9166c343a4a4742c13194b3, type: 3}
+  ballSize: {x: 2.4, y: 2.4, z: 1}
+  mergeScore: 45
