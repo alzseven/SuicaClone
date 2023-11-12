@@ -1,40 +1,47 @@
 ﻿using System;
+using Data;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Collider2D))]
 public class Ball : MonoBehaviour
 {
-    public GameObject nextBall;
-    public float id;
-    public bool isReady;
-    public Action<Ball> OnBallCollisionEnter2D;
+    public int ballIndex;
+    public float ballID;
+
+    public event Action<Ball> OnBallCollisionEnter2D;
+    public event Action<Ball, Ball> OnBallsCollidedEach;
 
     private void Awake()
     {
-        isReady = false;
+        ballIndex = -1;
+        ballID = 0f;
     }
 
+    public void Initialize(int index, float id, BallData newBallData, float mass)
+    {
+        ballIndex = index;
+        ballID = id;
+        transform.localScale = newBallData.BallSize;
+        GetComponent<SpriteRenderer>().sprite = newBallData.BallSprite;
+        GetComponent<Rigidbody2D>().mass = mass;
+    }
+    
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.gameObject.name.Contains("Circle") ||
-           other.gameObject.name.Contains("Square")) OnBallCollisionEnter2D?.Invoke(this);
-        
-        if (nextBall == null) return;
+        //TODO? only once?
+        OnBallCollisionEnter2D?.Invoke(this);
 
+        var otherGameObject = other.gameObject;
         
-        // TODO: Merge single ball only even collides two or more
-        if (other.gameObject.name == this.name)
+        //TODO: Replace literal string
+        if (otherGameObject.tag.Equals("Ball"))
         {
-            if (id > other.gameObject.GetComponent<Ball>().id) return;
-            
-            var newBall = Instantiate(nextBall, other.transform.position, Quaternion.identity);
-            if (newBall.TryGetComponent<Ball>(out var b))
+            if (otherGameObject.TryGetComponent<Ball>(out var ball))
             {
-                b.isReady = true;
-                b.id = BallDropper.gameTime;
+                OnBallsCollidedEach?.Invoke(this, ball);
             }
-            Destroy(other.gameObject);
-            Destroy(gameObject);
-            BallDropper.BallCount--;
         }
     }
 }
