@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Data.Variables;
 using UnityEngine;
 
@@ -13,7 +10,7 @@ public class Threshold : MonoBehaviour
     {
         if (other.TryGetComponent<Ball>(out var b))
         {
-            if (gameTime.Value - b.ballID > 1f)
+            if (b.ballID != 0 && gameTime.Value - b.ballID > 1f)
             {
                 Debug.Log("GameOver");
 

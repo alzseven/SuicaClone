@@ -61,15 +61,10 @@ public class BallManager : MonoBehaviour
         if (currentBallIndex.Value > -1)
         {
             onThrowBallSfxPublisher.PublishMessage();
-            var newBall = CreateBall(currentBallIndex.Value, t.position);
+            CreateBall(currentBallIndex.Value, t.position);
             currentBallIndex.Value = -1;
         }
     }
-
-    // private Ball CreateBall(int ballIndex)
-    // {
-    //     return CreateBall(ballIndex, Vector3.zero);
-    // }
     
     //TODO:
     private Ball CreateBall(int ballIndex, Vector3 pos, bool enableCollision = true)
